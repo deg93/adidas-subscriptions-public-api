@@ -1,0 +1,12 @@
+logging:
+  level:
+    ROOT: INFO
+    es.davidenjuan.subscriptions.publicapi: INFO
+
+spring:
+  data:
+    mongodb:
+      database: subscriptionsPublicApi
+
+server:
+  port: 8080

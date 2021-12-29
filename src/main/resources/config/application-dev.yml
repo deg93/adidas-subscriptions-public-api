@@ -1,0 +1,23 @@
+logging:
+  level:
+    ROOT: INFO
+    es.davidenjuan.subscriptions.publicapi: INFO
+
+spring:
+  jackson:
+    serialization:
+      indent-output: true
+  data:
+    mongodb:
+      uri: 
+      database: subscriptionsPublicApi
+      
+server:
+  port: 8080
+
+application:
+  jwt:
+    base64-secret: NDFhYzFkNGM5YjcwODlkMzhiZWI2NDY1MDYxNmVkYjZkZGY2YzA4ZTZiMjljNjk3MmQxNGJkMjkxODIzMGY3ZTM1MDRmMzVjYzY2MjQ4NDk5NTIyYmI4Zjc5YjIwMTc2YzAzNmNkYTI5MTFjOWM5ODcwZDgzMjA2ZmViNGVjNzk=
+    token-validity-seconds: 86400
+  internal-api:
+    uri: http://localhost:8081/api/subscriptions

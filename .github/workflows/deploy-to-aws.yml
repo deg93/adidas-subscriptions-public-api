@@ -1,0 +1,29 @@
+name: Deploy project to AWS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        cache: maven
+    - name: DockerHub login
+      run: echo '${{ secrets.DOCKER_ID_PASSWORD }}' | docker login --username ${{ secrets.DOCKER_ID_USER }} --password-stdin 
+    - name: Build with Maven
+      run: mvn compile jib:build
+    - name: Add SSH key
+      run: |
+        mkdir -p $HOME/.ssh
+        ssh-keyscan adidas-tech-challenge.davidenjuan.es >> $HOME/.ssh/known_hosts
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
+        chmod 600 $HOME/.ssh/id_rsa
+    - name: Pull and deploy image
+      run: ssh ubuntu@adidas-tech-challenge.davidenjuan.es "cd /home/ubuntu/Adidas/docker-compose && docker-compose pull public-api && docker-compose up -d public-api"
